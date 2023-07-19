@@ -32,11 +32,11 @@ variables:
 
 
 include:
-  # - <<: *repo
-  #   file: /global.yml
+  - <<: *repo
+    file: /global.yml
 
-  # - <<: *repo
-  #   file: /checks.yml
+  - <<: *repo
+    file: /checks.yml
 
   # - <<: *repo
   #   file: /go/global.yml
