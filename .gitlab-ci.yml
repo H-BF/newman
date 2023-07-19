@@ -1,0 +1,55 @@
+# https://gitlab.wildberries.ru/devops/ci/templates/-/blob/master/README.md
+.template_repo: &repo
+  project: &ci_tmpl 'devops/ci/templates'
+  ref: &ci_tmpl_vers 'v3.6.1'
+
+variables:
+  # Mandatory vars. Do not change this
+  CI_TMPL_PROJECT: *ci_tmpl
+  CI_TMPL_PROJECT_VERSION: *ci_tmpl_vers
+
+  #
+  # Language specific vars. Most likly need to specify
+  # 
+  GO_MAIN_PATH: ./app
+  GO_VER: "1.20"
+  ALPINE_VER: "3.17"
+  GO_TEST_FLAGS: "-mod=readonly"
+
+
+  CI_TMPL_HELM_CHARTS: "common-deploy@v4.2.0"
+  CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
+  # List of clusters for deploy
+  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
+  CI_TMPL_KUBE_CLUSTERS_STAGE: ""
+  CI_TMPL_KUBE_CLUSTERS_PROD: "k8s.prod-dl,k8s.prod-dp"
+
+  # Harbor project name
+  REGISTRY_PROJECT: "swarm"
+
+  # Change deploy jobs appearance in pipeline
+  CI_TMPL_DEPLOY_GROUPING: per-service
+
+
+include:
+  - <<: *repo
+    file: /pipelines/go.yml
+
+  # TODO собрать 
+  # - project: 'swarm/testops/hbf_api_tests'
+  #   ref: 'master'
+  #   file: /pipelines/postman.yml
+
+generate build:
+  variables:
+    CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
+
+generate deploy:
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^master$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
+
+deploy:
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^master$/
