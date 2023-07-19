@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as newman from 'newman';
 import { networks, rules, sg } from './testData';
+import { NewmanRunSummary } from 'newman';
 
 let swarm = require('./swarm.json')
 
@@ -43,10 +44,15 @@ async function sleep(time: number) {
     newman.run({
         collection: swarm,
         reporters: 'cli'
-    }, (err) => {
+    }, (err: Error | null, summury: NewmanRunSummary) => {
         if (err) {
             console.log(err)
         }
-        console.log('collection run complete!')
+        console.log('collection run complete!') 
+
+        if(summury.run.stats.assertions.failed || summury.run.stats.requests.failed) {
+            console.log("Заканчиваем c ошибкой")
+            process.exit(1)
+        }
     })
 })();
