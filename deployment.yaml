@@ -1,0 +1,82 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: api-tests
+  namespace: default
+  labels:
+    name: api-tests
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+        - name: api-tests
+          image: hbf_api_tests
+          env:
+            - name: HBF_HOST
+              value: hbf-server
+          imagePullPolicy: Never
+      restartPolicy: Never
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hbf-server
+  namespace: default
+  labels:
+    app.kubernetes.io/name: hbf-server
+spec:
+  containers:
+    - name: hbf-server
+      image: fraima/hbf-server:1.1.3
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - name: hbf-server
+          mountPath: /app/hack/configs/server.yaml
+          subPath: conf.yaml 
+      command: ["./bin/sgroups", "-config", "/app/hack/configs/server.yaml"]
+      ports:
+        - containerPort: 9006
+          name: hbf-server
+  volumes:
+    - name: hbf-server
+      configMap:
+        name: hbf-server
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hbf-server
+spec:
+  selector:
+    app.kubernetes.io/name: hbf-server
+  ports:
+    - port: 80
+      targetPort: hbf-server
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hbf-server
+data:
+  conf.yaml: |
+    ---
+    logger:
+        level: INFO
+
+    metrics:
+        enable: true
+
+    healthcheck:
+        enable: true
+
+    server:
+        endpoint: tcp://0.0.0.0:9006
+        graceful-shutdown: 30s
