@@ -55,9 +55,9 @@ include:
   #   # rules:
   #   #   - if: $CI_COMMIT_BRANCH =~ /^master$/
 
-generate build:
-  variables:
-    CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
+# generate build:
+#   variables:
+#     CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
 
 # generate deploy:
 #   rules:
