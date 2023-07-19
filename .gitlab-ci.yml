@@ -8,6 +8,22 @@ variables:
   CI_TMPL_PROJECT: *ci_tmpl
   CI_TMPL_PROJECT_VERSION: *ci_tmpl_vers
 
+  #
+  # Language specific vars. Most likly need to specify
+  # 
+  GO_MAIN_PATH: ./app
+  GO_VER: "1.20"
+  ALPINE_VER: "3.17"
+  GO_TEST_FLAGS: "-mod=readonly"
+
+
+  CI_TMPL_HELM_CHARTS: "common-deploy@v4.2.0"
+  CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
+  # List of clusters for deploy
+  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
+  CI_TMPL_KUBE_CLUSTERS_STAGE: ""
+  CI_TMPL_KUBE_CLUSTERS_PROD: "k8s.prod-dl,k8s.prod-dp"
+
   # Harbor project name
   REGISTRY_PROJECT: "swarm"
 
@@ -20,4 +36,35 @@ include:
     file: /global.yml
 
   - <<: *repo
+    file: /checks.yml
+
+  - <<: *repo
+    file: /go/global.yml
+
+  - <<: *repo
+    file: /go/lint.yml
+
+  - <<: *repo
+    file: /go/test.yml
+
+  - <<: *repo
     file: /docker/build.yml
+
+  # - <<: *repo
+  #   file: /helm/deploy.yml
+  #   # rules:
+  #   #   - if: $CI_COMMIT_BRANCH =~ /^master$/
+
+# generate build:
+#   variables:
+#     CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
+
+# generate deploy:
+#   rules:
+#     - if: $CI_COMMIT_BRANCH =~ /^master$/
+#       variables:
+#         CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
+
+# deploy:
+#   rules:
+#     - if: $CI_COMMIT_BRANCH =~ /^master$/
