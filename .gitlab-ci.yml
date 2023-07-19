@@ -33,12 +33,27 @@ variables:
 
 include:
   - <<: *repo
-    file: /pipelines/go.yml
+    file: /global.yml
 
-  # TODO собрать 
-  # - project: 'swarm/testops/hbf_api_tests'
-  #   ref: 'master'
-  #   file: /pipelines/postman.yml
+  # - <<: *repo
+  #   file: /checks.yml
+
+  # - <<: *repo
+  #   file: /go/global.yml
+
+  # - <<: *repo
+  #   file: /go/lint.yml
+
+  # - <<: *repo
+  #   file: /go/test.yml
+
+  - <<: *repo
+    file: /docker/build.yml
+
+  # - <<: *repo
+  #   file: /helm/deploy.yml
+  #   # rules:
+  #   #   - if: $CI_COMMIT_BRANCH =~ /^master$/
 
 generate build:
   variables:
