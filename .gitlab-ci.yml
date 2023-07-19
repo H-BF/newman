@@ -59,12 +59,12 @@ generate build:
   variables:
     CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
 
-generate deploy:
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^master$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
+# generate deploy:
+#   rules:
+#     - if: $CI_COMMIT_BRANCH =~ /^master$/
+#       variables:
+#         CI_TMPL_HELM_RELEASE_NAMES: "sgroups-postman"
 
-deploy:
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^master$/
+# deploy:
+#   rules:
+#     - if: $CI_COMMIT_BRANCH =~ /^master$/
