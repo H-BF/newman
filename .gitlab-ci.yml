@@ -36,18 +36,6 @@ include:
     file: /global.yml
 
   - <<: *repo
-    file: /checks.yml
-
-  - <<: *repo
-    file: /go/global.yml
-
-  - <<: *repo
-    file: /go/lint.yml
-
-  - <<: *repo
-    file: /go/test.yml
-
-  - <<: *repo
     file: /docker/build.yml
 
   # - <<: *repo
