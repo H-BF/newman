@@ -18,8 +18,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@kubernetes/client-node": "^0.18.1",
     "axios": "^1.4.0",
-    "newman": "^5.3.2",
+    "newman": "^5.1.2",
     "rimraf": "^5.0.1"
   }
 }
