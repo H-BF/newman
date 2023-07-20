@@ -1,5 +1,7 @@
 import * as newman from 'newman';
 import { NewmanRunSummary } from 'newman';
+import { k8sClient } from './src/k8sClient';
+import { testData } from './src/testDataGenerator';
 
 let swarm = require('./swarm.json')
 
@@ -24,8 +26,9 @@ swarm.variable.forEach((vr: any) => {
         console.log('collection run complete!') 
 
         if(summury.run.stats.assertions.failed || summury.run.stats.requests.failed) {
-            console.log("Заканчиваем c ошибкой")
+            console.log("exit with error")
             process.exit(1)
         }
     })
+
 })();
