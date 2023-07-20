@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as newman from 'newman';
-import { networks, rules, sg } from './testData';
 import { NewmanRunSummary } from 'newman';
+import { k8sClient } from './src/k8sClient';
+import { testData } from './src/testDataGenerator';
 
 let swarm = require('./swarm.json')
 
@@ -15,31 +15,15 @@ swarm.variable.forEach((vr: any) => {
     }
 });
 
-async function sleep(time: number) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
-
 (async () => {
-
-    await sleep(15000)
-
-    await axios.post(`http://${process.env.HBF_HOST}/v1/sync`, JSON.stringify(networks), {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-
-    await axios.post(`http://${process.env.HBF_HOST}/v1/sync`, JSON.stringify(sg), {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-
-    await axios.post(`http://${process.env.HBF_HOST}/v1/sync`, JSON.stringify(rules), {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
+    
+    try {
+        await k8sClient.waitPodStatus('default', 'app.kubernetes.io/name=hbf-server', 'Running')
+        await testData.generate()
+    } catch(err) {
+        console.log(err)
+        process.exit(1)
+    }
     
     newman.run({
         collection: swarm,
@@ -51,8 +35,9 @@ async function sleep(time: number) {
         console.log('collection run complete!') 
 
         if(summury.run.stats.assertions.failed || summury.run.stats.requests.failed) {
-            console.log("Заканчиваем c ошибкой")
+            console.log("exit with error")
             process.exit(1)
         }
     })
+
 })();
