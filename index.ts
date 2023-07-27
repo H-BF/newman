@@ -15,6 +15,9 @@ swarm.variable.forEach((vr: any) => {
     }
 });
 
+<<<<<<< index.ts
+(async () => {    
+=======
 (async () => {
     
     try {
@@ -25,6 +28,7 @@ swarm.variable.forEach((vr: any) => {
         process.exit(1)
     }
     
+>>>>>>> index.ts
     newman.run({
         collection: swarm,
         reporters: 'cli'
