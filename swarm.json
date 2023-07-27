@@ -480,7 +480,7 @@
 									"\r",
 									"pm.test(\"Check rules\", () => {\r",
 									"    const testData = {\r",
-									"        \"UDP\": [\"sg-3\", [[\"\", \"23000-23500\"]]],\r",
+									"        \"UDP\": [\"sg-3\", [[\"9999-10050\", \"23000-23500\"]]],\r",
 									"        \"TCP\": [\"sg-0\", [[\"4444\", \"7000\"], [\"4445\", \"7300-7500\"], [\"4446\", \"7600-7700,7800\"]]]\r",
 									"    }\r",
 									"\r",
@@ -1205,7 +1205,7 @@
 											"});\r",
 											"\r",
 											"pm.test(\"check message\", () => {\r",
-											"    pm.expect(pm.response.json().message).to.eql(\"unique index [tbl_network].[ip-net] is violated\")\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"ERROR: conflicting key value violates exclusion constraint \\\"prevent_networks_intersections\\\" (SQLSTATE 23P01)\")\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1296,20 +1296,20 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Status code is 400\", () => {\r",
-											"    pm.response.to.have.status(400);\r",
+											"pm.test(\"Status code is 500\", () => {\r",
+											"    pm.response.to.have.status(500);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"Validate response JSON schema\", () => {\r",
 											"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
 											"});\r",
 											"\r",
-											"pm.test(\"code is 3\", () => {\r",
-											"    pm.expect(pm.response.json().code).to.eql(3)\r",
+											"pm.test(\"code is 13\", () => {\r",
+											"    pm.expect(pm.response.json().code).to.eql(13)\r",
 											"});\r",
 											"\r",
 											"pm.test(\"check message\", () => {\r",
-											"    pm.expect(pm.response.json().message).to.eql(\"mem-db/SyncSGRules: validation failure; Ports: source ports have overlapped regions.\")\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"ERROR: new row for relation \\\"tbl_sg_rule\\\" violates check constraint \\\"S_ports_dont_intersect\\\" (SQLSTATE 23514)\")\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1361,7 +1361,7 @@
 											"});\r",
 											"\r",
 											"pm.test(\"check message\", () => {\r",
-											"    pm.expect(pm.response.json().message).to.eql(\"Integrity-of-SG: SG 'sg-with-nonexist-nw' no related network 'nw-nonexist'\")\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)\")\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1413,7 +1413,7 @@
 											"});\r",
 											"\r",
 											"pm.test(\"check message\", () => {\r",
-											"    pm.expect(pm.response.json().message).to.eql(\"Integrity-of-SGRules: not found ref to SG 'sg-nonexist-1'\")\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"ERROR: on check SG-From it found the SG(sg-nonexist-1) not exist (SQLSTATE P0001)\")\r",
 											"});"
 										],
 										"type": "text/javascript"
