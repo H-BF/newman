@@ -8,9 +8,6 @@ metadata:
 spec:
   backoffLimit: 0
   template:
-    metadata:
-      labels:
-        name: api-tests
     spec:
       initContainers:
         - name: wait-db
@@ -31,7 +28,6 @@ spec:
             - name: HBF_HOST
               value: hbf-server
           imagePullPolicy: Never
-      serviceAccountName: api-tests
       restartPolicy: Never
       volumes:
         - name: wait-db
