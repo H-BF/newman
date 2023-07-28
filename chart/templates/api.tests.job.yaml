@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-api-tests
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ .Release.Name }}-api-tests
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      initContainers:
+        {{- with .Values.postgres }}
+        - name: wait-db
+          image: {{ .image.repository }}:{{ .image.tag }}
+          imagePullPolicy: {{ .image.pullPolicy }}
+          {{- with .securityContext | default $.Values.defaults.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          command: ["sh", "/tmp/wait-db.sh"]
+          volumeMounts:
+            - name: {{ $.Release.Name }}-wait-db
+              mountPath: /tmp
+          env:
+          - name: POSTGRES_USER
+            value: {{ .user }} 
+          - name: POSTGRES_PASSWORD
+            value: {{ .pwd }}
+          - name: HBF_HOST
+            value: {{ $.Release.Name }}-hbf-server
+        {{- end }}
+      containers:
+        {{- with .Values.newman }}
+        - name: api-tests
+          image: {{ .image.repository }}:{{ .image.tag }}
+          imagePullPolicy: {{ .image.pullPolicy }}
+          env:
+            - name: HBF_HOST
+              value: {{ $.Release.Name }}-hbf-server
+        {{- end }}
+      restartPolicy: Never
+      volumes:
+        - name: {{ .Release.Name }}-wait-db
+          configMap:
+            name: {{ .Release.Name }}-wait-db

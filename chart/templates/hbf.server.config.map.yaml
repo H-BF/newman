@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-hbf-server
+  namespace: {{ .Release.Namespace }}
+data:
+  conf.yaml: |
+    ---
+    logger:
+        level: INFO
+
+    metrics:
+        enable: true
+
+    healthcheck:
+        enable: true
+
+    server:
+        endpoint: tcp://0.0.0.0:{{ .Values.HBFServer.ports.addressPort }}
+        graceful-shutdown: 30s

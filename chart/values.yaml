@@ -1,0 +1,34 @@
+postgres:
+  user: nkiver
+  pwd: nkiver
+  db: postgres
+  image:
+    pullPolicy: IfNotPresent
+    repository: postgres
+    tag: "14.8"
+  ports:
+    addressPort: 5432
+    addressPortAlias: psql
+
+newman:
+  image:
+      pullPolicy: Never
+      repository: hbf_api_tests
+      tag: "latest"
+
+HBFServer:
+  image:
+    pullPolicy: IfNotPresent
+    repository: fraima/hbf-server
+    tag: "1.1.4"
+  ports:
+    addressPort: 9006
+    addressPortAlias: hbf-server
+  securityContext:
+    privileged: true
+  svc:
+    pgPort: 5432
+    serverPort: 80
+
+defaults:
+  securityContext: {} 
