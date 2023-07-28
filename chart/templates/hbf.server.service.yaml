@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-hbf-server
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    component: {{ .Release.Name }}-hbf-server
+  ports:
+    - name: pg
+      port: {{ .Values.HBFServer.svc.pgPort }}
+      protocol: TCP
+      targetPort: {{ .Values.postgres.ports.addressPortAlias }}
+    - name: hbf
+      port: {{ .Values.HBFServer.svc.serverPort }}
+      protocol: TCP
+      targetPort: {{ .Values.HBFServer.ports.addressPortAlias }}
