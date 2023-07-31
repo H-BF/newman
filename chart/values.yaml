@@ -12,15 +12,22 @@ postgres:
 
 newman:
   image:
-      pullPolicy: Never
-      repository: hbf_api_tests
-      tag: "latest"
+    pullPolicy: Never
+    repository: hbf_api_tests
+    tag: "latest"
+  reporter:
+    user: nkiver
+    password: nkiver
+    host: test-db
+    port: 5432
+    name: postgres
+    schema: hbf_api_results
 
 HBFServer:
   image:
     pullPolicy: IfNotPresent
-    repository: fraima/hbf-server
-    tag: "1.1.4"
+    repository: harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups
+    tag: "feature-postgres-30bd21ff"
   ports:
     addressPort: 9006
     addressPortAlias: hbf-server
@@ -31,4 +38,4 @@ HBFServer:
     serverPort: 80
 
 defaults:
-  securityContext: {} 
+  securityContext: {}

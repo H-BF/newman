@@ -38,6 +38,18 @@ spec:
           env:
             - name: HBF_HOST
               value: {{ $.Release.Name }}-hbf-server
+            - name: REPORTER_DB_USER
+              value: {{ .reporter.user }}
+            - name: REPORTER_DB_PWD
+              value: {{ .reporter.password }}
+            - name: REPORTER_DB_HOST
+              value: {{ .reporter.host }}
+            - name: REPORTER_DB_PORT
+              value: "{{ .reporter.port | toString }}"
+            - name: REPORTER_DB_NAME
+              value: {{ .reporter.name }}
+            - name: REPORTER_DB_SCHEMA
+              value: {{ .reporter.schema }}
         {{- end }}
       restartPolicy: Never
       volumes:

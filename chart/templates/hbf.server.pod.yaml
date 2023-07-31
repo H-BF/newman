@@ -20,6 +20,7 @@ spec:
           mountPath: /app/hack/configs/server.yaml
           subPath: conf.yaml 
       command: ["./bin/sgroups", "-config", "/app/hack/configs/server.yaml"]
+      # command: ["./sgroups", "-config", "/app/hack/configs/server.yaml"]
       ports:
         - containerPort: {{ .ports.addressPort }}
           name: {{ .ports.addressPortAlias }}
@@ -27,7 +28,7 @@ spec:
         - name: SG_STORAGE_POSTGRES_URL
           value: postgres://{{ $.Values.postgres.user }}:{{ $.Values.postgres.pwd }}@localhost:5432/{{ $.Values.postgres.db }}?sslmode=disable
         - name: SG_STORAGE_TYPE
-          value: postgres
+          value: postgres 
     {{- end }}
 
     {{- with .Values.postgres }}
