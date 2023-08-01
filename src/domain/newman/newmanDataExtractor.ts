@@ -1,6 +1,6 @@
 import { NewmanRunExecution, NewmanRunSummary } from "newman";
-
-
+import { ExecutionDataExecutor } from "./executionDataExtractor";
+import { IExecution } from "./__interfaces";
 
 export class NewmanDataExtractor {
 
@@ -19,20 +19,23 @@ export class NewmanDataExtractor {
         return finish - start
     }
 
-
-    getDataFromExecutions() {
-        const executions = this.report.run.executions
-        for (let i = 0; i < 1; i++) {
-            const e = executions[i]
-            console.log(`METHOD: ${e.request.method}`)
-            console.log(this.buildURL(e))
-            console.log(e.request.getHeaders())
-            console.log(e.request.body?.raw)
-        }    
+    getAssertionNumber(): { total: number, failed: number } {
+        const asser = this.report.run.stats.assertions
+        return { total: asser.total || 0, failed: asser.failed || 0 }
     }
 
-    private buildURL(execution: NewmanRunExecution): string {
-        const url = execution.request.url
-        return `${url.protocol}://${url.getHost()}:${url.port}${url.getPath()}`
+    transformExecutionsData(): IExecution[] {
+        let result: IExecution[] = []
+        this.report.run.executions.forEach( execution => {
+            const exec = new ExecutionDataExecutor(execution)
+            result.push({
+                name: exec.getName(),
+                status: exec.getStatus(),
+                request: exec.getRequestData(),
+                response: exec.getResponseData(),
+                assertions: exec.getAssertionsData()
+            })
+        })
+        return result
     }
 }

@@ -1,6 +1,7 @@
 import * as newman from 'newman';
 import { NewmanRunSummary } from 'newman';
-import { ReporterCRUD } from './src/domain/database/reporter';
+import { Reporter } from './src/domain/database/reporter';
+import { NewmanDataExtractor } from './src/domain/newman/newmanDataExtractor';
 
 let swarm = require('./swarm.json')
 
@@ -14,31 +15,28 @@ swarm.variable.forEach((vr: any) => {
     }
 });
 
-(async () => {    
+const reporter = new Reporter();
+
+(async () => {
+
+    await reporter.startLaunch()
+
     newman.run({
         collection: swarm,
         reporters: 'cli'
     }, async (err: Error | null, summury: NewmanRunSummary) => {
         if (err) {
             console.log(err)
+            await reporter.closeLaunchWithErr(`${err}`)
+            process.exit(1)
         }
-        console.log('collection run complete!') 
+        console.log('collection run complete!')
+        
+        const nde = new NewmanDataExtractor(summury)
+        await reporter.writeExecutionsData(nde.transformExecutionsData())
+        await reporter.closeLaunch(nde.getAssertionNumber(), nde.getDuration())
 
         if(summury.run.stats.assertions.failed || summury.run.stats.requests.failed) {
-            
-            const reporter = new ReporterCRUD()
-            await reporter.connect()
-            const launchUuid = await reporter.createLaunch()
-            const executionUuid = await reporter.createExecutions(["fuck", launchUuid, null, null, 56, 67])
-            const requestUuid = await reporter.createRequest(["POST", "http://puck.ru:8080", '{"content-type": "json"}', '{"have": [{"moo": "boo"}]}'])
-            const responseUuid = await reporter.createResponse(["OK", 200, '{"content-type": "json"}', '{"have": [{"moo1": "boo1"}]}'])
-
-            reporter.updateExecutions(executionUuid, { "request_uuid": requestUuid, "response_uuid": responseUuid })
-
-            await reporter.createAssertion(["assertion", executionUuid, "ERROR", "FAILED"])
-
-            await reporter.close()
-
             console.log("exit with error")
             process.exit(1)
         }
