@@ -37,5 +37,10 @@ HBFServer:
     pgPort: 5432
     serverPort: 80
 
+gitlab:
+  pipelineID: 312355
+  src_branch: from
+  dst_branch: to
+
 defaults:
   securityContext: {}

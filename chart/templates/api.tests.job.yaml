@@ -50,6 +50,12 @@ spec:
               value: {{ .reporter.name }}
             - name: REPORTER_DB_SCHEMA
               value: {{ .reporter.schema }}
+            - name: CI_PIPELINE_ID
+              value: "{{ $.Values.gitlab.pipelineID | toString }}"
+            - name: CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+              value: {{ $.Values.gitlab.src_branch }}
+            - name: CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+              value: {{ $.Values.gitlab.dst_branch }}
         {{- end }}
       restartPolicy: Never
       volumes:

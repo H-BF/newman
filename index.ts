@@ -19,7 +19,20 @@ const reporter = new Reporter();
 
 (async () => {
 
-    await reporter.startLaunch()
+    if(!process.env.CI_PIPELINE_ID)
+        throw new Error("Missing environment variable CI_PIPELINE_ID")
+
+    if(!process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME)
+        throw new Error("Missing environment variable CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
+
+    if(!process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME)
+        throw new Error("Missing environment variable CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
+
+    await reporter.startLaunch(
+        process.env.CI_PIPELINE_ID,
+        process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME,
+        process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    )
 
     newman.run({
         collection: swarm,

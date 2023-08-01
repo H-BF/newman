@@ -16,9 +16,20 @@ export class ReporterCRUD {
         await this.client.close()
     }
 
-    async createLaunch(): Promise<string> {
+    async createLaunch(values: any[]): Promise<string> {
         const data = await this.client.query<{uuid: string}>(
-            `INSERT INTO launch DEFAULT VALUES RETURNING uuid;`
+            `
+            INSERT INTO hbf_api_results.launch (
+                pipeline,
+                src_branch,
+                dst_branch,
+                fail,
+                pass,
+                duration,
+                status
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING uuid;
+            `, values
         )
         return data[0].uuid
     }

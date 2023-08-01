@@ -10,9 +10,21 @@ export class Reporter {
         this.crud = new ReporterCRUD()
     }
 
-    async startLaunch() {
+    async startLaunch(
+        pipeline: string,
+        src_branch: string,
+        dst_branch: string
+    ) {
         await this.crud.connect()
-        this.launchUuid = await this.crud.createLaunch()
+        this.launchUuid = await this.crud.createLaunch([
+            pipeline,
+            src_branch,
+            dst_branch,
+            null,
+            null,
+            null,
+            'in_process'
+        ])
     }
 
     async closeLaunch(asser: { total: number, failed: number }, duration: number) {
