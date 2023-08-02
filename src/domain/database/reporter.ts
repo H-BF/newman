@@ -13,7 +13,8 @@ export class Reporter {
     async startLaunch(
         pipeline: string,
         src_branch: string,
-        dst_branch: string
+        dst_branch: string,
+        image: string
     ) {
         await this.crud.connect()
         this.launchUuid = await this.crud.createLaunch([
@@ -23,6 +24,7 @@ export class Reporter {
             null,
             null,
             null,
+            image,
             'in_process'
         ])
     }
