@@ -2,6 +2,8 @@ import * as newman from 'newman';
 import { NewmanRunSummary } from 'newman';
 import { Reporter } from './src/domain/database/reporter';
 import { NewmanDataExtractor } from './src/domain/newman/newmanDataExtractor';
+import { Webhook } from './src/domain/telegram/webhook';
+import { errorMessage } from './src/domain/telegram/templates';
 
 let swarm = require('./swarm.json')
 
@@ -28,10 +30,20 @@ const reporter = new Reporter();
     if(!process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME)
         throw new Error("Missing environment variable CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
 
+    if(!process.env.HBF_IMAGE)
+        throw new Error("Missing environment variable HBF_IMAGE")
+
+    if(!process.env.TG_GROUP_ID)
+        throw new Error("Missing environment variable TG_GROUP_ID")
+
+    const webhook = new Webhook(process.env.TG_GROUP_ID);
+    const errMsg = webhook.buildMsg(errorMessage, { pipeline: process.env.CI_PIPELINE_ID })
+
     await reporter.startLaunch(
         process.env.CI_PIPELINE_ID,
         process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME,
-        process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+        process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME,
+        process.env.HBF_IMAGE
     )
 
     newman.run({
@@ -41,6 +53,7 @@ const reporter = new Reporter();
         if (err) {
             console.log(err)
             await reporter.closeLaunchWithErr(`${err}`)
+            await webhook.send(errMsg)
             process.exit(1)
         }
         console.log('collection run complete!')
@@ -51,6 +64,7 @@ const reporter = new Reporter();
 
         if(summury.run.stats.assertions.failed || summury.run.stats.requests.failed) {
             console.log("exit with error")
+            await webhook.send(errMsg)
             process.exit(1)
         }
     })

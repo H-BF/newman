@@ -26,8 +26,9 @@ export class ReporterCRUD {
                 fail,
                 pass,
                 duration,
+                image,
                 status
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING uuid;
             `, values
         )

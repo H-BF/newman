@@ -56,6 +56,12 @@ spec:
               value: {{ $.Values.gitlab.src_branch }}
             - name: CI_MERGE_REQUEST_TARGET_BRANCH_NAME
               value: {{ $.Values.gitlab.dst_branch }}
+            - name: TG_TOKEN
+              value: {{ $.Values.telegram.token }}
+            - name: TG_GROUP_ID
+              value: "{{ $.Values.telegram.group_id | toString }}"
+            - name: HBF_IMAGE
+              value: {{ $.Values.HBFServer.image.repository }}:{{ $.Values.HBFServer.image.tag }}
         {{- end }}
       restartPolicy: Never
       volumes:
