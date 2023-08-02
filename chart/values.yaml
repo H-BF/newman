@@ -27,7 +27,7 @@ HBFServer:
   image:
     pullPolicy: IfNotPresent
     repository: harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups
-    tag: "feature-postgres-30bd21ff"
+    tag: "feature-postgres-5ce3cf72"
   ports:
     addressPort: 9006
     addressPortAlias: hbf-server
@@ -38,13 +38,13 @@ HBFServer:
     serverPort: 80
 
 gitlab:
-  pipelineID: 000000
+  pipelineID: 123456
   src_branch: from
   dst_branch: to
 
 telegram:
   token: 5996680756:AAGHDMu5WnkaVioGJbesVJMv8irooQvfL7g
-  group_id: -1001959123261
+  group_id: "-1001959123261"
 
 defaults:
   securityContext: {}

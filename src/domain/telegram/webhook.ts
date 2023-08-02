@@ -19,10 +19,14 @@ export class Webhook {
     }
 
     async send(message: string) {
-        await this.bot.sendMessage(
-            this.chatID,
-            message,
-            { parse_mode: 'Markdown' }
-        )
+        try {
+            await this.bot.sendMessage(
+                this.chatID,
+                message,
+                { parse_mode: 'Markdown' }
+            )
+        } catch (err: any) {
+            console.log(`${err.message}`)
+        } 
     }
 }
