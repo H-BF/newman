@@ -822,12 +822,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Validate response JSON schema\", () => {\r",
 									"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"check error code is 5\", () => {\r",
+									"    pm.expect(pm.response.json().code).to.eql(5)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"check message\", () => {\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Not Found\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -974,12 +982,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Validate response JSON schema\", () => {\r",
 									"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"check error code is 5\", () => {\r",
+									"    pm.expect(pm.response.json().code).to.eql(5)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"check message\", () => {\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Not Found\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1148,12 +1164,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Validate response JSON schema\", () => {\r",
 									"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"check error code is 5\", () => {\r",
+									"    pm.expect(pm.response.json().code).to.eql(5)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"check message\", () => {\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Not Found\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1602,6 +1626,110 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": {\r\n                    \"s\": \"\",\r\n                    \"d\": \"40000-45000\"\r\n                },\r\n                \"sgFrom\": \"sg-test-0\",\r\n                \"sgTo\": \"sg-test-1\",\r\n                \"transport\": \"TCP\"\r\n            }\r\n        ]\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/sync",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"sync"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[NW] Ошибка при некорректном CIDR",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate response JSON schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"check error code is 3\", () => {\r",
+											"    pm.expect(pm.response.json().code).to.eql(3)\r",
+											"})\r",
+											"\r",
+											"pm.test(\"check message\", () => {\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"the '200.150.0.225/28' seems just an IP address; the address of network is expected instead\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"networks\": {\r\n\t\t\"networks\": [\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"nw-not-valid\",\r\n\t\t\t\t\"network\": {\r\n\t\t\t\t\t\"CIDR\": \"200.150.0.225/28\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"syncOp\": \"Upsert\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/sync",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"sync"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[RULE] Ошибка при некорректных границах диапазона портов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate response JSON schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"check error code is 3\", () => {\r",
+											"    pm.expect(pm.response.json().code).to.eql(3)\r",
+											"})\r",
+											"\r",
+											"pm.test(\"check message\", () => {\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"bad 'source' port(s) '9999-1050': the left bound '9999' is greather than right one '1050': incorrect port range(s) source\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"9999-1050\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-4\",\r\n                \"sgTo\": \"sg-0\",\r\n                \"transport\": \"TCP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"Upsert\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
