@@ -2,6 +2,10 @@ build
 node_modules
 .dockerignore
 .env
+<<<<<<< .gitignore
 reset.sh
 db.yaml
 newman.json
+=======
+reset.sh
+>>>>>>> .gitignore

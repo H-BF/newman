@@ -1,11 +1,17 @@
-import { DBClient } from "../../infrastructure/database/DBClient"
+import { DBClient } from "../../../infrastructure/database/DBClient"
 
 export class ReporterCRUD {
 
     private client: DBClient
 
     constructor() {
-        this.client = new DBClient()
+        this.client = new DBClient(
+            process.env.REPORTER_DB_USER,
+            process.env.REPORTER_DB_PWD,
+            process.env.REPORTER_DB_HOST,
+            Number(process.env.REPORTER_DB_PORT),
+            process.env.REPORTER_DB_NAME
+        )
     }
 
     async connect() {
