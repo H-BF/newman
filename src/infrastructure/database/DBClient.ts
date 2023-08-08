@@ -1,16 +1,22 @@
-import { Client, PoolClient, QueryResult, QueryResultRow } from 'pg';
+import { Client, QueryResultRow } from 'pg';
 
 export class DBClient {
     
     private client: Client
 
-    constructor() {
+    constructor(
+        user?: string,
+        pwd?: string,
+        host?: string,
+        port?: number,
+        database?: string
+    ) {
         this.client = new Client({
-            user: process.env.REPORTER_DB_USER,
-            password: process.env.REPORTER_DB_PWD,
-            host: process.env.REPORTER_DB_HOST,
-            port: Number(process.env.REPORTER_DB_PORT),
-            database: process.env.REPORTER_DB_NAME
+            user: user,
+            password: pwd,
+            host: host,
+            port: port,
+            database: database
         })
     }
 

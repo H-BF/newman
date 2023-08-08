@@ -1,4 +1,4 @@
-import { IExecution } from "../newman/__interfaces";
+import { IExecution } from "../../newman/__interfaces";
 import { ReporterCRUD } from "./reporterCRUD";
 
 export class Reporter {

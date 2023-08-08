@@ -1,11 +1,14 @@
 import * as newman from 'newman';
 import { NewmanRunSummary } from 'newman';
-import { Reporter } from './src/domain/database/reporter';
+import { Reporter } from './src/domain/database/reporter/reporter';
 import { NewmanDataExtractor } from './src/domain/newman/newmanDataExtractor';
 import { Webhook } from './src/domain/telegram/webhook';
 import { errorMessage } from './src/domain/telegram/templates';
+import { TestDataWriter } from './src/domain/database/testdata/testDataWriter';
+import fs from 'fs';
 
 let swarm = require('./swarm.json')
+let testData = fs.readFileSync('./testdata.sql', 'utf8')
 
 if(!process.env.HBF_HOST) {
     throw new Error("Missing environment variable HBF_HOST")
@@ -17,6 +20,7 @@ swarm.variable.forEach((vr: any) => {
     }
 });
 
+const writer = new TestDataWriter();
 const reporter = new Reporter();
 
 (async () => {
@@ -38,6 +42,9 @@ const reporter = new Reporter();
 
     const webhook = new Webhook(process.env.TG_GROUP_ID);
     const errMsg = webhook.buildMsg(errorMessage, { pipeline: process.env.CI_PIPELINE_ID })
+
+
+    await writer.write(testData)
 
     await reporter.startLaunch(
         process.env.CI_PIPELINE_ID,

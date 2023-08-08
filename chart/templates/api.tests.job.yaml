@@ -62,6 +62,16 @@ spec:
               value: "{{ $.Values.telegram.group_id | toString }}"
             - name: HBF_IMAGE
               value: {{ $.Values.HBFServer.image.repository }}:{{ $.Values.HBFServer.image.tag }}
+            - name: POSTGRES_USER
+              value: {{ $.Values.postgres.user }}
+            - name: POSTGRES_PASSWORD
+              value: {{ $.Values.postgres.pwd }}            
+            - name: POSTGRES_HOST
+              value: {{ $.Release.Name }}-hbf-server
+            - name: POSTGRES_PORT
+              value: "{{ $.Values.postgres.ports.addressPort | toString }}"
+            - name: POSTGRES_DB
+              value: {{ $.Values.postgres.db }}
         {{- end }}
       restartPolicy: Never
       volumes:
