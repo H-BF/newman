@@ -27,7 +27,7 @@ HBFServer:
   image:
     pullPolicy: IfNotPresent
     repository: harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups
-    tag: "feature-postgres-5ce3cf72"
+    tag: "dev-fcbe8feb"
   ports:
     addressPort: 9006
     addressPortAlias: hbf-server
