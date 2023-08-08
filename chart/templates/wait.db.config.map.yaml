@@ -7,9 +7,9 @@ data:
   wait-db.sh: |
     #!/bin/sh
 
-    until [ "$(psql postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$HBF_HOST:{{ .Values.postgres.ports.addressPort }}/postgres?sslmode=disable -c "SELECT COUNT(*) FROM sgroups.tbl_sg_rule;" -t -A)" -gt 0 ]; do
-      echo "Ожидание непустой таблицы 'sgroups.tbl_sg_rule' в базе данных в Pod hbf-server..."
+    until [ "$(psql postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$HBF_HOST:{{ .Values.postgres.ports.addressPort }}/postgres?sslmode=disable -c "SELECT COUNT(*) FROM sgroups.tbl_sg_rule;" -t -A)" -eq 0 ]; do
+      echo "Ожидание пустой таблицы 'sgroups.tbl_sg_rule' в базе данных в Pod hbf-server..."
       sleep 5
     done
 
-    echo "Таблица 'sgroups.tbl_sg_rule' в базе данных в Pod hbf-server не пустая. Продолжение работы основного контейнера..."
+    echo "Таблица 'sgroups.tbl_sg_rule' в базе данных в Pod hbf-server отсутствует. Продолжение работы основного контейнера..."

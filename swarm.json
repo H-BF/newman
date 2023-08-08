@@ -822,12 +822,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Validate response JSON schema\", () => {\r",
 									"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"check error code is 5\", () => {\r",
+									"    pm.expect(pm.response.json().code).to.eql(5)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"check message\", () => {\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Not Found\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -974,12 +982,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Validate response JSON schema\", () => {\r",
 									"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"check error code is 5\", () => {\r",
+									"    pm.expect(pm.response.json().code).to.eql(5)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"check message\", () => {\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Not Found\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1148,12 +1164,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Validate response JSON schema\", () => {\r",
 									"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"check error code is 5\", () => {\r",
+									"    pm.expect(pm.response.json().code).to.eql(5)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"check message\", () => {\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Not Found\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1620,6 +1644,162 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "[NW] Ошибка при некорректном CIDR",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate response JSON schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"check error code is 3\", () => {\r",
+											"    pm.expect(pm.response.json().code).to.eql(3)\r",
+											"})\r",
+											"\r",
+											"pm.test(\"check message\", () => {\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"the '200.150.0.225/28' seems just an IP address; the address of network is expected instead\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"networks\": {\r\n\t\t\"networks\": [\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"nw-not-valid\",\r\n\t\t\t\t\"network\": {\r\n\t\t\t\t\t\"CIDR\": \"200.150.0.225/28\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"syncOp\": \"Upsert\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/sync",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"sync"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[RULE] Ошибка при некорректных границах диапазона портов",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate response JSON schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"check error code is 3\", () => {\r",
+											"    pm.expect(pm.response.json().code).to.eql(3)\r",
+											"})\r",
+											"\r",
+											"pm.test(\"check message\", () => {\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"bad 'source' port(s) '9999-1050': the left bound '9999' is greather than right one '1050': incorrect port range(s) source\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"9999-1050\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-4\",\r\n                \"sgTo\": \"sg-0\",\r\n                \"transport\": \"TCP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"Upsert\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/sync",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"sync"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[SG] некорректное значание",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate response JSON schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(JSON.parse(pm.variables.get(\"errorResponseJsonSchema\")));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"code is 3\", () => {\r",
+											"    pm.expect(pm.response.json().code).to.eql(3)\r",
+											"});\r",
+											"\r",
+											"pm.test(\"check message\", () => {\r",
+											"    pm.expect(pm.response.json().message).to.eql(\"proto: (line 9:34): invalid value for enum type: \\\"QWERTY\\\"\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"groups\": {\r\n\t\t\"groups\": [\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"sg-0\",\r\n\t\t\t\t\"networks\": [\r\n\t\t\t\t\t\"nw-0\"\r\n\t\t\t\t],\r\n                \"defaultAction\": \"QWERTY\",\r\n                \"logs\": true,\r\n                \"trace\": false\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"syncOp\": \"FullSync\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/v1/sync",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"v1",
+										"sync"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1694,7 +1874,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"groups\": {\r\n        \"groups\": [\r\n            {\r\n                \"name\": \"sg-test-0\",\r\n                \"networks\": [\r\n                    \"nw-test-0\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-1\",\r\n                \"networks\": [\r\n                    \"nw-test-1\",\r\n                    \"nw-test-2\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-2\",\r\n                \"networks\": [\r\n                    \"nw-test-3\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-3\",\r\n                \"networks\": [\r\n                    \"nw-test-4\"\r\n                ]\r\n            }\r\n        ]   \r\n    },\r\n    \"syncOp\": \"Upsert\"\r\n}",
+									"raw": "{\r\n    \"groups\": {\r\n        \"groups\": [\r\n            {\r\n                \"name\": \"sg-test-0\",\r\n                \"networks\": [\r\n                    \"nw-test-0\"\r\n                ],\r\n                \"defaultAction\": \"ACCEPT\",\r\n                \"logs\": true,\r\n                \"trace\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-1\",\r\n                \"networks\": [\r\n                    \"nw-test-1\",\r\n                    \"nw-test-2\"\r\n                ],\r\n                \"logs\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-2\",\r\n                \"networks\": [\r\n                    \"nw-test-3\"\r\n                ],\r\n                \"trace\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-3\",\r\n                \"networks\": [\r\n                    \"nw-test-4\"\r\n                ]\r\n            }\r\n        ]   \r\n    },\r\n    \"syncOp\": \"Upsert\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1738,7 +1918,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-0\",\r\n                \"sgTo\": \"sg-test-1\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"50000\",\r\n                    \"d\": \"35000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-2\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"30000-31000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-2\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"5000, 6000-7000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-3\",\r\n                \"sgTo\": \"sg-test-0\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n                        {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"4444\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"UDP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"Upsert\"\r\n}",
+									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-0\",\r\n                \"sgTo\": \"sg-test-1\",\r\n                \"transport\": \"TCP\",\r\n                \"logs\": true\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"50000\",\r\n                    \"d\": \"35000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-2\",\r\n                \"transport\": \"TCP\",\r\n                \"logs\": false\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"30000-31000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-2\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"5000, 6000-7000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-3\",\r\n                \"sgTo\": \"sg-test-0\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n                        {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"4444\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"UDP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"Upsert\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1831,7 +2011,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"groups\": {\r\n        \"groups\": [\r\n            {\r\n                \"name\": \"sg-test-0\",\r\n                \"networks\": [\r\n                    \"nw-test-0\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-1\",\r\n                \"networks\": [\r\n                    \"nw-test-1\",\r\n                    \"nw-test-2\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-2\",\r\n                \"networks\": [\r\n                    \"nw-test-3\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-3\",\r\n                \"networks\": [\r\n                    \"nw-test-4\"\r\n                ]\r\n            }\r\n        ]   \r\n    },\r\n    \"syncOp\": \"FullSync\"\r\n}",
+									"raw": "{\r\n    \"groups\": {\r\n        \"groups\": [\r\n            {\r\n                \"name\": \"sg-test-0\",\r\n                \"networks\": [\r\n                    \"nw-test-0\"\r\n                ],\r\n                \"defaultAction\": \"ACCEPT\",\r\n                \"logs\": true,\r\n                \"trace\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-1\",\r\n                \"networks\": [\r\n                    \"nw-test-1\",\r\n                    \"nw-test-2\"\r\n                ],\r\n                \"logs\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-2\",\r\n                \"networks\": [\r\n                    \"nw-test-3\"\r\n                ],\r\n                \"trace\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-3\",\r\n                \"networks\": [\r\n                    \"nw-test-4\"\r\n                ],\r\n                \"trace\": false\r\n            }\r\n        ]   \r\n    },\r\n    \"syncOp\": \"FullSync\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1875,7 +2055,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-0\",\r\n                \"sgTo\": \"sg-test-1\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"50000\",\r\n                    \"d\": \"35000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-2\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"30000-31000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-2\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"5000, 6000-7000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-3\",\r\n                \"sgTo\": \"sg-test-0\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n                        {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"4444\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"UDP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"FullSync\"\r\n}",
+									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-0\",\r\n                \"sgTo\": \"sg-test-1\",\r\n                \"transport\": \"TCP\",\r\n                \"logs\": true\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"50000\",\r\n                    \"d\": \"35000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-2\",\r\n                \"transport\": \"TCP\",\r\n                \"logs\": false\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"30000-31000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-2\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"5000, 6000-7000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-3\",\r\n                \"sgTo\": \"sg-test-0\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n                        {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"4444\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"UDP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"FullSync\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1968,7 +2148,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"groups\": {\r\n        \"groups\": [\r\n            {\r\n                \"name\": \"sg-test-0\",\r\n                \"networks\": [\r\n                    \"nw-test-0\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-1\",\r\n                \"networks\": [\r\n                    \"nw-test-1\",\r\n                    \"nw-test-2\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-2\",\r\n                \"networks\": [\r\n                    \"nw-test-3\"\r\n                ]\r\n            },\r\n            {\r\n                \"name\": \"sg-test-3\",\r\n                \"networks\": [\r\n                    \"nw-test-4\"\r\n                ]\r\n            }\r\n        ]   \r\n    },\r\n    \"syncOp\": \"Delete\"\r\n}",
+									"raw": "{\r\n    \"groups\": {\r\n        \"groups\": [\r\n            {\r\n                \"name\": \"sg-test-0\",\r\n                \"networks\": [\r\n                    \"nw-test-0\"\r\n                ],\r\n                \"defaultAction\": \"ACCEPT\",\r\n                \"logs\": true,\r\n                \"trace\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-1\",\r\n                \"networks\": [\r\n                    \"nw-test-1\",\r\n                    \"nw-test-2\"\r\n                ],\r\n                \"logs\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-2\",\r\n                \"networks\": [\r\n                    \"nw-test-3\"\r\n                ],\r\n                \"trace\": true\r\n            },\r\n            {\r\n                \"name\": \"sg-test-3\",\r\n                \"networks\": [\r\n                    \"nw-test-4\"\r\n                ]\r\n            }\r\n        ]   \r\n    },\r\n    \"syncOp\": \"Delete\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2012,7 +2192,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-0\",\r\n                \"sgTo\": \"sg-test-1\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"50000\",\r\n                    \"d\": \"35000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-2\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"30000-31000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-2\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"5000, 6000-7000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-3\",\r\n                \"sgTo\": \"sg-test-0\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n                        {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"4444\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"UDP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"Delete\"\r\n}",
+									"raw": "{\r\n    \"sgRules\": {\r\n        \"rules\": [\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"40000-45000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-0\",\r\n                \"sgTo\": \"sg-test-1\",\r\n                \"transport\": \"TCP\",\r\n                \"logs\": true\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"50000\",\r\n                    \"d\": \"35000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-2\",\r\n                \"transport\": \"TCP\",\r\n                \"logs\": false\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"30000-31000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-2\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n            {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"5000, 6000-7000\",\r\n                    \"d\": \"55000-56000\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-3\",\r\n                \"sgTo\": \"sg-test-0\",\r\n                \"transport\": \"TCP\"\r\n            },\r\n                        {\r\n                \"ports\": [\r\n                    {\r\n                    \"s\": \"\",\r\n                    \"d\": \"4444\"\r\n                    }\r\n                ],\r\n                \"sgFrom\": \"sg-test-1\",\r\n                \"sgTo\": \"sg-test-3\",\r\n                \"transport\": \"UDP\"\r\n            }\r\n        ]\r\n    },\r\n    \"syncOp\": \"Delete\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2107,12 +2287,12 @@
 		},
 		{
 			"key": "sgResponseJsonSchema",
-			"value": "{\n    \"type\" : \"object\",\n    \"properties\" : {\n        \"groups\" : {\n            \"type\" : \"array\",\n            \"items\" : {\n                \"type\" : \"object\",\n                \"properties\" : {\n                    \"name\" : { \"type\" : \"string\" },\n                    \"networks\" : {\n                        \"type\" : \"array\",\n                        \"items\" : { \"type\" : \"string\" }\n                    }\n                },\n                \"additionalProperties\" : false\n            }\n        }\n    },\n    \"required\" : [\"groups\"],\n    \"additionalProperties\" : false\n}",
+			"value": "{\n    \"type\" : \"object\",\n    \"properties\" : {\n        \"groups\" : {\n            \"type\" : \"array\",\n            \"items\" : {\n                \"type\" : \"object\",\n                \"properties\" : {\n                    \"name\" : { \"type\" : \"string\" },\n                    \"networks\" : {\n                        \"type\" : \"array\",\n                        \"items\" : { \"type\" : \"string\" }\n                    },\n\t\t\t\t\t\"defaultAction\" : {\"type\" : \"string\"},\n\t\t\t\t\t\"trace\" : {\"type\" : \"boolean\"},\n\t\t\t\t\t\"logs\" : {\"type\" : \"boolean\"}\n                },\n                \"additionalProperties\" : false\n            }\n        }\n    },\n    \"required\" : [\"groups\"],\n    \"additionalProperties\" : false\n}",
 			"type": "string"
 		},
 		{
 			"key": "rulesResponseJsonSchema",
-			"value": "{\n    \"type\" : \"object\",\n    \"properties\" : {\n        \"rules\" : {\n            \"type\" : \"array\",\n            \"items\" : {\n                \"type\" : \"object\",\n                \"properties\" : {\n                    \"sgFrom\" : { \"type\" : \"string\" },\n                    \"sgTo\" : { \"type\" : \"string\" },\n                    \"transport\": { \"type\" : \"string\" },\n                    \"ports\" : {\n                        \"type\" : \"array\",\n                        \"items\": {\n                            \"type\" : \"object\",\n                            \"properties\" : {\n                                \"s\" : { \"type\" : \"string\" },\n                                \"d\" : { \"type\" : \"string\" }\n                            },\n                            \"additionalProperties\": false\n                        }\n                    }\n                },\n                \"additionalProperties\": false\n            }\n        }\n    },\n    \"required\": [\"rules\"],\n    \"additionalProperties\": false\n}",
+			"value": "{\n    \"type\" : \"object\",\n    \"properties\" : {\n        \"rules\" : {\n            \"type\" : \"array\",\n            \"items\" : {\n                \"type\" : \"object\",\n                \"properties\" : {\n                    \"sgFrom\" : { \"type\" : \"string\" },\n                    \"sgTo\" : { \"type\" : \"string\" },\n                    \"transport\": { \"type\" : \"string\" },\n                    \"ports\" : {\n                        \"type\" : \"array\",\n                        \"items\": {\n                            \"type\" : \"object\",\n                            \"properties\" : {\n                                \"s\" : { \"type\" : \"string\" },\n                                \"d\" : { \"type\" : \"string\" }\n                            },\n                            \"additionalProperties\": false\n                        }\n                    },\n\t\t\t\t\t\"logs\" : {\"type\" : \"boolean\"}\n                },\n                \"additionalProperties\": false\n            }\n        }\n    },\n    \"required\": [\"rules\"],\n    \"additionalProperties\": false\n}",
 			"type": "string"
 		},
 		{
@@ -2127,7 +2307,7 @@
 		},
 		{
 			"key": "sgJsonSchema",
-			"value": "{\n    \"type\" : \"object\",\n    \"properties\" : {\n        \"name\" : { \"type\" : \"string\" },\n        \"networks\" : {\n            \"type\" : \"array\",\n            \"items\" : {\n                \"type\" : \"string\"\n            }\n        }\n    },\n    \"additionalProperties\": false\n}",
+			"value": "{\n    \"type\" : \"object\",\n    \"properties\" : {\n        \"name\" : { \"type\" : \"string\" },\n        \"networks\" : {\n            \"type\" : \"array\",\n            \"items\" : {\n                \"type\" : \"string\"\n            }\n        },\n\t\t\"defaultAction\" : {\"type\" : \"string\"},\n\t\t\"trace\" : {\"type\" : \"boolean\"},\n\t\t\"logs\" : {\"type\" : \"boolean\"}\n    },\n    \"additionalProperties\": false\n}",
 			"type": "string"
 		}
 	]
