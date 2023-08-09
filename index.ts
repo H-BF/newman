@@ -7,8 +7,18 @@ import { errorMessage } from './src/domain/telegram/templates';
 import { TestDataWriter } from './src/domain/database/testdata/testDataWriter';
 import fs from 'fs';
 
+
+
 let swarm = require('./swarm.json')
 let testData = fs.readFileSync('./testdata.sql', 'utf8')
+
+let reporter: Reporter | undefined;
+
+if(process.env.REPORTER_DB_HOST) {
+    reporter = new Reporter();
+} else {
+    console.warn(`Missing environment variable REPORTER_DB_HOST. Results will not be saved!!`)
+}
 
 if(!process.env.HBF_HOST) {
     throw new Error("Missing environment variable HBF_HOST")
@@ -21,7 +31,6 @@ swarm.variable.forEach((vr: any) => {
 });
 
 const writer = new TestDataWriter();
-const reporter = new Reporter();
 
 (async () => {
 
@@ -44,8 +53,7 @@ const reporter = new Reporter();
     const errMsg = webhook.buildMsg(errorMessage, { pipeline: process.env.CI_PIPELINE_ID })
 
     await writer.write(testData)
-
-    await reporter.startLaunch(
+    await reporter?.startLaunch(
         process.env.CI_PIPELINE_ID,
         process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME,
         process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME,
@@ -58,15 +66,15 @@ const reporter = new Reporter();
     }, async (err: Error | null, summury: NewmanRunSummary) => {
         if (err) {
             console.log(err)
-            await reporter.closeLaunchWithErr(`${err}`)
+            await reporter?.closeLaunchWithErr(`${err}`)
             await webhook.send(errMsg)
             process.exit(1)
         }
         console.log('collection run complete!')
         
         const nde = new NewmanDataExtractor(summury)
-        await reporter.writeExecutionsData(nde.transformExecutionsData())
-        await reporter.closeLaunch(nde.getAssertionNumber(), nde.getDuration())
+        await reporter?.writeExecutionsData(nde.transformExecutionsData())
+        await reporter?.closeLaunch(nde.getAssertionNumber(), nde.getDuration())
 
         if(summury.run.stats.assertions.failed || summury.run.stats.requests.failed) {
             console.log("exit with error")
