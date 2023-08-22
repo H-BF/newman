@@ -1,4 +1,4 @@
-import { DBClient } from "../../../infrastructure/database/DBClient"
+import { DBClient } from "../../infrastructure/database/DBClient"
 
 export class TestDataWriter {
 
