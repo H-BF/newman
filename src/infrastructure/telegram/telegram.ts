@@ -1,14 +1,12 @@
 import TelegramBot, { Message, SendMessageOptions } from 'node-telegram-bot-api';
+import { variables } from '../../init';
 
 export class Telegram {
 
     private bot: TelegramBot
 
     constructor() {
-        if(!process.env.TG_TOKEN)
-            throw new Error("Missing environment variable TG_TOKEN")
-        
-        this.bot = new TelegramBot(process.env.TG_TOKEN, { polling: true })
+        this.bot = new TelegramBot(variables.get("TG_TOKEN"), { polling: true })
     }
 
     async sendMessage(

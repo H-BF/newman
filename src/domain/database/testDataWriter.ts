@@ -1,4 +1,5 @@
 import { DBClient } from "../../infrastructure/database/DBClient"
+import { variables } from "../../init"
 
 export class TestDataWriter {
 
@@ -6,11 +7,11 @@ export class TestDataWriter {
 
     constructor() {
         this.client = new DBClient(
-            process.env.POSTGRES_USER,
-            process.env.POSTGRES_PASSWORD,
-            process.env.POSTGRES_HOST,
-            Number(process.env.POSTGRES_PORT),
-            process.env.POSTGRES_DB
+            variables.get("POSTGRES_USER"),
+            variables.get("POSTGRES_PASSWORD"),
+            variables.get("POSTGRES_HOST"),
+            Number(variables.get("POSTGRES_PORT")),
+            variables.get("POSTGRES_DB")
         )
     }
 

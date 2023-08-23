@@ -33,7 +33,6 @@ export class DBClient {
 
     async connect() {
         await this.client.connect()
-        await this.client.query(`SET search_path TO ${process.env.REPORTER_DB_SCHEMA}`)
     }
 
     async close() {

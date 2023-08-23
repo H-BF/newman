@@ -6,26 +6,22 @@ import { Webhook } from './src/domain/telegram/webhook';
 import { errorMessage } from './src/domain/telegram/templates';
 import { TestDataWriter } from './src/domain/database/testDataWriter';
 import fs from 'fs';
-import { MissEnvVariable } from './src/errors';
+import { variables } from './src/init';
 
 let swarm = require('./swarm.json')
 let testData = fs.readFileSync('./testdata.sql', 'utf8')
 
 let reporter: Reporter | undefined;
 
-if(process.env.IS_REPORT_BE_SAVED) {
+if(Boolean(variables.get("IS_REPORT_BE_SAVED"))) {
     reporter = new Reporter();
 } else {
     console.warn(`Results will not be saved!!`)
 }
 
-if(!process.env.HBF_HOST) {
-    throw new MissEnvVariable("HBF_HOST")
-}
-
 swarm.variable.forEach((vr: any) => {
     if(vr.key === "HOST") {
-        vr.value = process.env.HBF_HOST
+        vr.value = variables.get("HBF_HOST")
     }
 });
 
@@ -33,34 +29,16 @@ const writer = new TestDataWriter();
 
 (async () => {
 
-    if(!process.env.CI_PIPELINE_ID)
-        throw new MissEnvVariable("CI_PIPELINE_ID")
-
-    if(!process.env.CI_JOB_ID)
-        throw new MissEnvVariable("CI_PIPELINE_ID")
-
-    if(!process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME)
-        throw new MissEnvVariable("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
-
-    if(!process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME)
-        throw new MissEnvVariable("CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
-
-    if(!process.env.HBF_IMAGE)
-        throw new MissEnvVariable("HBF_IMAGE")
-
-    if(!process.env.TG_GROUP_ID)
-        throw new MissEnvVariable("TG_GROUP_ID")
-
-    const webhook = new Webhook(process.env.TG_GROUP_ID);
-    const errMsg = webhook.buildMsg(errorMessage, { pipeline: process.env.CI_PIPELINE_ID })
+    const webhook = new Webhook(variables.get("TG_GROUP_ID"));
+    const errMsg = webhook.buildMsg(errorMessage, { pipeline: variables.get("CI_PIPELINE_ID") })
 
     await writer.write(testData)
     await reporter?.startLaunch(
-        process.env.CI_PIPELINE_ID,
-        process.env.CI_JOB_ID,
-        process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME,
-        process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME,
-        process.env.HBF_IMAGE
+        variables.get("CI_PIPELINE_ID"),
+        variables.get("CI_JOB_ID"),
+        variables.get("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"),
+        variables.get("CI_MERGE_REQUEST_TARGET_BRANCH_NAME"),
+        variables.get("HBF_IMAGE")
     )
 
     newman.run({
