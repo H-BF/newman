@@ -1,27 +1,26 @@
 import * as newman from 'newman';
 import { NewmanRunSummary } from 'newman';
-import { Reporter } from './src/domain/database/reporter/reporter';
+import { Reporter } from './src/domain/reporter/reporter';
 import { NewmanDataExtractor } from './src/domain/newman/newmanDataExtractor';
 import { Webhook } from './src/domain/telegram/webhook';
 import { errorMessage } from './src/domain/telegram/templates';
-import { TestDataWriter } from './src/domain/database/testdata/testDataWriter';
+import { TestDataWriter } from './src/domain/database/testDataWriter';
 import fs from 'fs';
-
-
+import { MissEnvVariable } from './src/errors';
 
 let swarm = require('./swarm.json')
 let testData = fs.readFileSync('./testdata.sql', 'utf8')
 
 let reporter: Reporter | undefined;
 
-if(process.env.REPORTER_DB_HOST) {
+if(process.env.IS_REPORT_BE_SAVED) {
     reporter = new Reporter();
 } else {
-    console.warn(`Missing environment variable REPORTER_DB_HOST. Results will not be saved!!`)
+    console.warn(`Results will not be saved!!`)
 }
 
 if(!process.env.HBF_HOST) {
-    throw new Error("Missing environment variable HBF_HOST")
+    throw new MissEnvVariable("HBF_HOST")
 }
 
 swarm.variable.forEach((vr: any) => {
@@ -35,19 +34,22 @@ const writer = new TestDataWriter();
 (async () => {
 
     if(!process.env.CI_PIPELINE_ID)
-        throw new Error("Missing environment variable CI_PIPELINE_ID")
+        throw new MissEnvVariable("CI_PIPELINE_ID")
+
+    if(!process.env.CI_JOB_ID)
+        throw new MissEnvVariable("CI_PIPELINE_ID")
 
     if(!process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME)
-        throw new Error("Missing environment variable CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
+        throw new MissEnvVariable("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
 
     if(!process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME)
-        throw new Error("Missing environment variable CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
+        throw new MissEnvVariable("CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
 
     if(!process.env.HBF_IMAGE)
-        throw new Error("Missing environment variable HBF_IMAGE")
+        throw new MissEnvVariable("HBF_IMAGE")
 
     if(!process.env.TG_GROUP_ID)
-        throw new Error("Missing environment variable TG_GROUP_ID")
+        throw new MissEnvVariable("TG_GROUP_ID")
 
     const webhook = new Webhook(process.env.TG_GROUP_ID);
     const errMsg = webhook.buildMsg(errorMessage, { pipeline: process.env.CI_PIPELINE_ID })
@@ -55,6 +57,7 @@ const writer = new TestDataWriter();
     await writer.write(testData)
     await reporter?.startLaunch(
         process.env.CI_PIPELINE_ID,
+        process.env.CI_JOB_ID,
         process.env.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME,
         process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME,
         process.env.HBF_IMAGE
