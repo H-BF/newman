@@ -37,7 +37,7 @@ HBFServer:
 
 gitlab:
   pipelineID: 8787
-  jobID: 32432
+  jobID: 324328
   src_branch: from
   dst_branch: to
 
