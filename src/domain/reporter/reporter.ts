@@ -3,11 +3,13 @@ import { LaunchStatus } from "../../infrastructure/reporter/interfaces/launch.in
 import { Method } from "../../infrastructure/reporter/interfaces/request.interface";
 import { ReporterClient } from "../../infrastructure/reporter/reporter";
 import { IExecution } from "../newman/__interfaces";
+import { swarm } from "../test_data/test-data-preparation";
 
 export class Reporter {
 
     private client: ReporterClient
     private launchUuid: string | undefined
+    private jsonSchemas: Record<string, string> = {}
 
     constructor() {
         this.client = new ReporterClient()
@@ -18,14 +20,16 @@ export class Reporter {
         job: string,
         srcBranch: string,
         dstBranch: string,
-        image: string
+        commit: string,
+        hbfTag: string
     ) {
         this.launchUuid = await this.client.createLaunch({
             pipeline: Number(pipeline),
             job: Number(job),
             srcBranch: srcBranch,
             dstBranch: dstBranch,
-            image: image
+            commit: commit,
+            hbfTag: hbfTag
         }) 
     }
 
@@ -54,6 +58,21 @@ export class Reporter {
         await this.client.updateLaunch({
             uuid: this.launchUuid,
             status: LaunchStatus.ERROR
+        })
+    }
+
+    async writeValidateJsonSchemas(data: Record<string, string>) {
+
+        if (!this.launchUuid)
+            throw new Error('Missing launch uuid! Start thr launch.')
+
+        Object.entries(data).forEach(async ([key, value]) => {
+            const uuid = await this.client.createJsonSchema({
+                name: key,
+                launchUuid: this.launchUuid!,
+                schema: value
+            })
+            this.jsonSchemas[key] = uuid
         })
     }
 
@@ -91,6 +110,7 @@ export class Reporter {
                     name: assertion.name,
                     executionUuid: executionUuid,
                     errorMessage: assertion.err_msg || null,
+                    jsonSchema: this.jsonSchemas[assertion.schema] || null,
                     status: assertion.status.toLowerCase() as TestStatus
                 })
             }

@@ -2,6 +2,7 @@ export interface IAssertionReq {
     name: string
     executionUuid: string
     errorMessage: string | null
+    jsonSchema: string | null
     status: TestStatus
 }
 

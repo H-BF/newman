@@ -38,8 +38,6 @@ spec:
           env:
             - name: HBF_HOST
               value: {{ $.Release.Name }}-hbf-server
-            - name: IS_REPORT_BE_SAVED
-              value: "{{ .reporter.isReportBeSaved | toString }}"
             - name: REPORTER_HOST
               value: {{ .reporter.host }}
             - name: REPORTER_PORT
@@ -50,16 +48,18 @@ spec:
               value: "{{ $.Values.gitlab.pipelineID | toString }}"
             - name: CI_JOB_ID
               value: "{{ $.Values.gitlab.jobID | toString }}"              
-            - name: CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+            - name: CI_SOURCE_BRANCH_NAME
               value: {{ $.Values.gitlab.src_branch }}
-            - name: CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+            - name: CI_TARGET_BRANCH_NAME
               value: {{ $.Values.gitlab.dst_branch }}
+            - name: COMMIT
+              value: {{ $.Values.gitlab.commit }}              
             - name: TG_TOKEN
               value: {{ $.Values.telegram.token }}
             - name: TG_GROUP_ID
               value: "{{ $.Values.telegram.group_id | toString }}"
-            - name: HBF_IMAGE
-              value: {{ $.Values.HBFServer.image.repository }}:{{ $.Values.HBFServer.image.tag }}
+            - name: HBF_TAG
+              value: {{ $.Values.HBFServer.image.tag }}
             - name: POSTGRES_USER
               value: {{ $.Values.postgres.user }}
             - name: POSTGRES_PASSWORD
