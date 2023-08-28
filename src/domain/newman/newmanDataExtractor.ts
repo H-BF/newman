@@ -1,4 +1,4 @@
-import { NewmanRunExecution, NewmanRunSummary } from "newman";
+import { NewmanRunSummary } from "newman";
 import { ExecutionDataExecutor } from "./executionDataExtractor";
 import { IExecution } from "./__interfaces";
 

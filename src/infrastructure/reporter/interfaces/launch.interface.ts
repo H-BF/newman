@@ -3,8 +3,9 @@ export interface ILaunchCreateReq {
     pipeline: number;
     job: number;
     srcBranch: string
-    dstBranch: string 
-    image: string
+    dstBranch: string
+    commit: string 
+    hbfTag: string
 }
 
 export interface ILaunchCreateRes {

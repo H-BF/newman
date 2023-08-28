@@ -2,6 +2,7 @@ import { variables } from "../../init";
 import { RestClient } from "../axios/rest-client";
 import { IAssertionReq, IAssertionRes } from "./interfaces/assertion.interface";
 import { IExecutionReq, IExecutionRes } from "./interfaces/execution.interface";
+import { IJsonSchemaReq, IJsonSchemaRes } from "./interfaces/json-schema.interface";
 import { ILaunchErrReq } from "./interfaces/launch-error.interface";
 import { ILaunchCreateReq, ILaunchCreateRes, ILaunchUpdReq, ILaunchUpdRes } from "./interfaces/launch.interface";
 import { IRequestReq, IRequestRes } from "./interfaces/request.interface";
@@ -16,7 +17,7 @@ export class ReporterClient extends RestClient {
             variables.get("REPORTER_PORT"),
             variables.get("REPORTER_PROTOCOL"),
         )
-        this.defaults.baseURL += '/v1'
+        this.defaults.baseURL += '/api/v1'
     }
 
     async createLaunch(launch: ILaunchCreateReq): Promise<string> {
@@ -47,6 +48,11 @@ export class ReporterClient extends RestClient {
     async createAssertions(assertions: IAssertionReq[]): Promise<number> {
         const { data } = await this.post<IAssertionRes>('/assertions', assertions)
         return data.count
+    }
+
+    async createJsonSchema(jsonSchema: IJsonSchemaReq): Promise<string> {
+        const { data } = await this.post<IJsonSchemaRes>('/json_schema', jsonSchema)
+        return data.uuid
     }
 
     async createLaunchError(launchError: ILaunchErrReq): Promise<void> {

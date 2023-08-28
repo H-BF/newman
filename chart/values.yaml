@@ -16,7 +16,6 @@ newman:
     repository: hbf_api_tests
     tag: "latest"
   reporter:
-    isReportBeSaved: true
     protocol: http
     host: 172.25.143.81
     port: 9001
@@ -36,10 +35,11 @@ HBFServer:
     serverPort: 80
 
 gitlab:
-  pipelineID: 8787
-  jobID: 324328
+  pipelineID: 878787
+  jobID: 14
   src_branch: from
   dst_branch: to
+  commit: 34er3r323
 
 telegram:
   token: 5996680756:AAGHDMu5WnkaVioGJbesVJMv8irooQvfL7g
