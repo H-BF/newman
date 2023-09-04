@@ -17,8 +17,10 @@ newman:
     tag: "latest"
   reporter:
     protocol: http
-    host: 172.25.143.81
-    port: 9001
+    host: swarm-ingress-controller.swarm.svc.k8s.dldevel
+    port: 80    
+    # host: 172.25.143.81
+    # port: 9001
 
 HBFServer:
   image:
@@ -36,7 +38,7 @@ HBFServer:
 
 gitlab:
   pipelineID: 878787
-  jobID: 14
+  jobID: 1458
   src_branch: from
   dst_branch: to
   commit: 34er3r323
