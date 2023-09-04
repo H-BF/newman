@@ -17,10 +17,10 @@ newman:
     tag: "latest"
   reporter:
     protocol: http
-    host: swarm-ingress-controller.swarm.svc.k8s.dldevel
-    port: 80    
-    # host: 172.25.143.81
-    # port: 9001
+    # host: swarm-ingress-controller.swarm.svc.k8s.dldevel
+    #port: 80    
+    host: 172.25.143.81
+    port: 9001
 
 HBFServer:
   image:
