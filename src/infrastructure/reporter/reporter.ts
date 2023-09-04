@@ -1,7 +1,7 @@
 import { variables } from "../../init";
 import { RestClient } from "../axios/rest-client";
 import { IAssertionReq, IAssertionRes } from "./interfaces/assertion.interface";
-import { IExecutionReq, IExecutionRes } from "./interfaces/execution.interface";
+import { IExecutionReq, IExecutionRes, IExecutionUpdReq, IExecutionUpdRes } from "./interfaces/execution.interface";
 import { IJsonSchemaReq, IJsonSchemaRes } from "./interfaces/json-schema.interface";
 import { ILaunchErrReq } from "./interfaces/launch-error.interface";
 import { ILaunchCreateReq, ILaunchCreateRes, ILaunchUpdReq, ILaunchUpdRes } from "./interfaces/launch.interface";
@@ -43,6 +43,11 @@ export class ReporterClient extends RestClient {
     async createExecution(execution: IExecutionReq): Promise<string> {
         const { data } = await this.post<IExecutionRes>('/execution', execution)
         return  data.uuid
+    }
+
+    async updateExecution(execution: IExecutionUpdReq): Promise<IExecutionUpdRes> {
+        const { data } = await this.patch<IExecutionUpdRes>('/execution', execution)
+        return data
     }
 
     async createAssertions(assertions: IAssertionReq[]): Promise<number> {

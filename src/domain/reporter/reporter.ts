@@ -83,6 +83,8 @@ export class Reporter {
         for (const execution of executions) {
 
             let assertionData: IAssertionReq[] = []
+            let failCount: number = 0
+            let passCount: number = 0
 
             const requestUuid = await this.client.createRequest({
                 method: execution.request.method as Method,
@@ -106,14 +108,30 @@ export class Reporter {
             })
 
             for (const assertion of execution.assertions) {
+                const status = assertion.status.toLowerCase() as TestStatus
                 assertionData = assertionData.concat({
                     name: assertion.name,
                     executionUuid: executionUuid,
                     errorMessage: assertion.err_msg || null,
                     jsonSchema: this.jsonSchemas[assertion.schema] || null,
-                    status: assertion.status.toLowerCase() as TestStatus
+                    status: status
                 })
+
+                switch (status) {
+                    case 'pass':
+                        passCount++;
+                        break;
+                    case 'fail':
+                        failCount++;
+                        break
+                }
             }
+
+            await this.client.updateExecution({
+                uuid: executionUuid,
+                failCount: failCount,
+                passCount: passCount
+            })
 
             await this.client.createAssertions(assertionData)
         }
