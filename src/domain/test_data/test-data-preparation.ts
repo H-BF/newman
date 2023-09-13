@@ -9,8 +9,10 @@ class TestDataPreparation {
     constructor() {
         this.scenario = require('../../../swarm.json')
         this.scenario.variable.forEach((vr: any) => {
-            if(vr.key === "HOST") {
+            if (vr.key === "HOST") {
                 vr.value = variables.get("HBF_HOST")
+            } else if (vr.key === "PORT") {
+                vr.value = variables.get("HBF_PORT")
             }
         });
     }

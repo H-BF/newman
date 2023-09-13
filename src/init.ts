@@ -5,22 +5,14 @@ class VariablesStorage {
     private variables: Record<string, string> = {}
     private requiredVariables = [
         "HBF_HOST",
+        "HBF_PORT",
+
         "REPORTER_HOST",
         "REPORTER_PORT",
         "REPORTER_PROTOCOL",
-        "CI_PIPELINE_ID",
-        "CI_JOB_ID",
-        "CI_SOURCE_BRANCH_NAME",
-        "CI_TARGET_BRANCH_NAME",
-        "TG_TOKEN",
-        "TG_GROUP_ID",
-        "HBF_TAG",
-        "COMMIT",
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-        "POSTGRES_HOST",
-        "POSTGRES_PORT",
-        "POSTGRES_DB"
+        
+        "ABA_CONTROL_IP",
+        "ABA_CONTROL_PORT"
     ]
 
     constructor() {

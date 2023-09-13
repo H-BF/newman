@@ -1,64 +1,17 @@
 import { IAssertionReq, TestStatus } from "../../infrastructure/reporter/interfaces/assertion.interface";
-import { LaunchStatus } from "../../infrastructure/reporter/interfaces/launch.interface";
 import { Method } from "../../infrastructure/reporter/interfaces/request.interface";
 import { ReporterClient } from "../../infrastructure/reporter/reporter";
 import { IExecution } from "../newman/__interfaces";
-import { swarm } from "../test_data/test-data-preparation";
 
 export class Reporter {
 
     private client: ReporterClient
-    private launchUuid: string | undefined
+    private launchUuid: string
     private jsonSchemas: Record<string, string> = {}
 
-    constructor() {
+    constructor(launchUuid: string) {
+        this.launchUuid = launchUuid
         this.client = new ReporterClient()
-    }
-
-    async startLaunch(
-        pipeline: string,
-        job: string,
-        srcBranch: string,
-        dstBranch: string,
-        commit: string,
-        hbfTag: string
-    ) {
-        this.launchUuid = await this.client.createLaunch({
-            pipeline: Number(pipeline),
-            job: Number(job),
-            srcBranch: srcBranch,
-            dstBranch: dstBranch,
-            commit: commit,
-            hbfTag: hbfTag
-        }) 
-    }
-
-    async closeLaunch(asser: { total: number, failed: number }, duration: number) {
-        if (!this.launchUuid)
-            throw new Error('Missing launch uuid! Start thr launch.')
-
-        await this.client.updateLaunch({
-            uuid: this.launchUuid,
-            failCount: asser.failed,
-            passCount: asser.total - asser.failed,
-            duration: duration,
-            status: LaunchStatus.FINISH
-        })
-    }
-
-    async closeLaunchWithErr(err: string) {
-        if (!this.launchUuid)
-            throw new Error('Missing launch uuid! Start thr launch.')
-
-        await this.client.createLaunchError({
-            launchUuid: this.launchUuid,
-            message: err
-        })
-
-        await this.client.updateLaunch({
-            uuid: this.launchUuid,
-            status: LaunchStatus.ERROR
-        })
     }
 
     async writeValidateJsonSchemas(data: Record<string, string>) {

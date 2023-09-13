@@ -2,38 +2,18 @@ import * as newman from 'newman';
 import { NewmanRunSummary } from 'newman';
 import { Reporter } from './src/domain/reporter/reporter';
 import { NewmanDataExtractor } from './src/domain/newman/newmanDataExtractor';
-import { Webhook } from './src/domain/telegram/webhook';
-import { errorMessage } from './src/domain/telegram/templates';
-import { TestDataWriter } from './src/domain/database/testDataWriter';
-import fs from 'fs';
-import { variables } from './src/init';
 import { swarm } from './src/domain/test_data/test-data-preparation';
+import { AbaControlClient } from './src/domain/grpc/aba.control.client';
+import { Status } from './gRPC/control/Status';
 
-
-let testData = fs.readFileSync('./testdata.sql', 'utf8')
-
-let reporter = new Reporter();
-const writer = new TestDataWriter();
+// let testData = fs.readFileSync('./testdata.sql', 'utf8');
 
 (async () => {
+    const control = new AbaControlClient()
+    control.sendMsg({ status: Status.ready })
 
-    const webhook = new Webhook(variables.get("TG_GROUP_ID"));
-    const errMsg = webhook.buildMsg(
-        errorMessage,
-        { 
-            pipeline: variables.get("CI_PIPELINE_ID") 
-        }
-    )
-
-    await writer.write(testData)
-    await reporter.startLaunch(
-        variables.get("CI_PIPELINE_ID"),
-        variables.get("CI_JOB_ID"),
-        variables.get("CI_SOURCE_BRANCH_NAME"),
-        variables.get("CI_TARGET_BRANCH_NAME"),
-        variables.get("COMMIT"),
-        variables.get("HBF_TAG")
-    )
+   const launchUUID = await control.listen()
+   const reporter = new Reporter(launchUUID);
 
     swarm.collectJsonSchemas()
     await reporter.writeValidateJsonSchemas(swarm.jsonSchems)
@@ -44,20 +24,24 @@ const writer = new TestDataWriter();
     }, async (err: Error | null, summury: NewmanRunSummary) => {
         if (err) {
             console.log(err)
-            await reporter?.closeLaunchWithErr(`${err}`)
-            await webhook.send(errMsg)
-            process.exit(1)
+            control.sendMsg({
+                status: Status.finish,
+                data: err.message
+            })
+            control.endStream()
         }
-        console.log('collection run complete!')
         
         const nde = new NewmanDataExtractor(summury)
         await reporter.writeExecutionsData(nde.transformExecutionsData())
-        await reporter.closeLaunch(nde.getAssertionNumber(), nde.getDuration())
 
-        if(summury.run.stats.assertions.failed || summury.run.stats.requests.failed) {
-            console.log("exit with error")
-            await webhook.send(errMsg)
-            process.exit(1)
-        }
+        control.sendMsg({
+            status: Status.finish,
+            data: JSON.stringify({
+                fail: nde.getAssertionNumber().failed,
+                pass: nde.getAssertionNumber().total - nde.getAssertionNumber().failed
+            })
+        })
+
+        control.endStream()
     })
 })();
