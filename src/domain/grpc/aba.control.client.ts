@@ -24,7 +24,10 @@ export class AbaControlClient {
             grpc.credentials.createInsecure()
         )
 
-        this.call = client.streamApi()
+        const meta = new grpc.Metadata()
+        meta.add('id', (Math.floor(Math.random() * 10000) + 1).toString())
+
+        this.call = client.streamApi(meta)
     }
 
     sendMsg(msg: Req) {

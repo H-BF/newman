@@ -36,10 +36,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/list/networks",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/networks",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -87,10 +88,11 @@
 							"raw": "{\r\n    \"neteworkNames\": [\r\n        \"nw-1\",\r\n        \"nw-2\"\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/list/networks",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/networks",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -127,10 +129,11 @@
 							"raw": "{\r\n    \"neteworkNames\": \"nw-err\"\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/list/networks",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/networks",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -167,10 +170,11 @@
 							"raw": "{\r\n    \"asdasdas\" : \"asdasdas\"\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/list/networks",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/networks",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -213,10 +217,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/list/security-groups",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/security-groups",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -268,10 +273,11 @@
 							"raw": "{\r\n    \"sgNames\" : [\r\n        \"sg-0\",\r\n        \"sg-4\"\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/list/security-groups",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/security-groups",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -313,10 +319,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/list/security-groups",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/security-groups",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -358,10 +365,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/list/security-groups",
+							"raw": "{{HOST}}:{{PORT}}/v1/list/security-groups",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"list",
@@ -441,10 +449,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"rules"
@@ -506,10 +515,11 @@
 							"raw": "{\r\n    \"sgFrom\": [],\r\n    \"sgTo\": [\"sg-2\"]\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"rules"
@@ -578,10 +588,11 @@
 							"raw": "{\r\n    \"sgFrom\": [\"sg-3\"],\r\n    \"sgTo\": [\"sg-4\"]\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"rules"
@@ -626,10 +637,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"rules"
@@ -665,10 +677,11 @@
 							"raw": "{\r\n    \"sgFrom\": \"sg-3\",\r\n    \"sgTo\": \"sg-4\"\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"rules"
@@ -704,10 +717,11 @@
 							"raw": "{\r\n    \"asdasdas\" : \"asdasdas\"\r\n}"
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"rules"
@@ -756,10 +770,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/sg/sg-1/subnets",
+							"raw": "{{HOST}}:{{PORT}}/v1/sg/sg-1/subnets",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"sg",
@@ -801,10 +816,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/sg/vxciovuxciopsdrkljjo/subnets",
+							"raw": "{{HOST}}:{{PORT}}/v1/sg/vxciovuxciopsdrkljjo/subnets",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"sg",
@@ -846,10 +862,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/sg/sg-1/subnts",
+							"raw": "{{HOST}}:{{PORT}}/v1/sg/sg-1/subnts",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"sg",
@@ -920,10 +937,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/sg-from/sg-3/to/sg-4/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/sg-from/sg-3/to/sg-4/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"sg-from",
@@ -959,10 +977,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/sg-from/sg-1/to/sg-22342/rules",
+							"raw": "{{HOST}}:{{PORT}}/v1/sg-from/sg-1/to/sg-22342/rules",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"sg-from",
@@ -1006,10 +1025,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/sg-from/sg-1/to/sg-2/rule",
+							"raw": "{{HOST}}:{{PORT}}/v1/sg-from/sg-1/to/sg-2/rule",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"sg-from",
@@ -1028,7 +1048,7 @@
 			"name": "GET /v1​/{address}​/sg",
 			"item": [
 				{
-					"name": "SG по IP",
+					"name": "[SG] SG по IP",
 					"event": [
 						{
 							"listen": "test",
@@ -1060,10 +1080,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/20.150.0.235/sg",
+							"raw": "{{HOST}}:{{PORT}}/v1/20.150.0.235/sg",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"20.150.0.235",
@@ -1074,7 +1095,7 @@
 					"response": []
 				},
 				{
-					"name": "SG по CIDR",
+					"name": "[SG] SG по CIDR",
 					"event": [
 						{
 							"listen": "test",
@@ -1108,10 +1129,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/10.150.0.220%2F32/sg",
+							"raw": "{{HOST}}:{{PORT}}/v1/10.150.0.220%2F32/sg",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"10.150.0.220%2F32",
@@ -1122,7 +1144,7 @@
 					"response": []
 				},
 				{
-					"name": "Вставленные данные не являются ни IP ни CIDR",
+					"name": "[SG] Вставленные данные не являются ни IP ни CIDR",
 					"event": [
 						{
 							"listen": "test",
@@ -1144,10 +1166,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/qwew/sg",
+							"raw": "{{HOST}}:{{PORT}}/v1/qwew/sg",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"qwew",
@@ -1158,7 +1181,7 @@
 					"response": []
 				},
 				{
-					"name": "Некорректный запрос (опечатка)",
+					"name": "[SG] Некорректный запрос (опечатка)",
 					"event": [
 						{
 							"listen": "test",
@@ -1188,10 +1211,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/10.150.0.220/sf",
+							"raw": "{{HOST}}:{{PORT}}/v1/10.150.0.220/sf",
 							"host": [
 								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"v1",
 								"10.150.0.220",
@@ -1249,10 +1273,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1301,10 +1326,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1353,10 +1379,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1405,10 +1432,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1457,10 +1485,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1501,10 +1530,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/async",
+									"raw": "{{HOST}}:{{PORT}}/v1/async",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"async"
@@ -1545,10 +1575,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1589,10 +1620,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1633,10 +1665,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1685,10 +1718,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1737,10 +1771,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1789,10 +1824,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1838,10 +1874,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1882,10 +1919,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1926,10 +1964,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -1975,10 +2014,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -2019,10 +2059,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -2063,10 +2104,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -2112,10 +2154,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -2156,10 +2199,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -2200,10 +2244,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/v1/sync",
+									"raw": "{{HOST}}:{{PORT}}/v1/sync",
 									"host": [
 										"{{HOST}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"v1",
 										"sync"
@@ -2240,10 +2285,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/v1/sync/status",
+					"raw": "{{HOST}}:{{PORT}}/v1/sync/status",
 					"host": [
 						"{{HOST}}"
 					],
+					"port": "{{PORT}}",
 					"path": [
 						"v1",
 						"sync",
@@ -2277,6 +2323,11 @@
 	"variable": [
 		{
 			"key": "HOST",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PORT",
 			"value": "",
 			"type": "string"
 		},
