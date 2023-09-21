@@ -4,9 +4,6 @@ class VariablesStorage {
 
     private variables: Record<string, string> = {}
     private requiredVariables = [
-        "HBF_HOST",
-        "HBF_PORT",
-
         "REPORTER_HOST",
         "REPORTER_PORT",
         "REPORTER_PROTOCOL",

@@ -70,8 +70,8 @@ export class ExecutionDataExecutor {
     getResponseData(): IResponse {
         const response = this.execution.response
         return {
-            status: response.status,
-            code: response.code,
+            status: response.status || "unknoun",
+            code: response.code || 0,
             header: this.buildResponseHeader(),
             body: this.buildResponseBody()
         }

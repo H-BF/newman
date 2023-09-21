@@ -1,36 +1,24 @@
-import * as newman from 'newman';
-import { NewmanRunSummary } from 'newman';
 import { Reporter } from './src/domain/reporter/reporter';
 import { NewmanDataExtractor } from './src/domain/newman/newmanDataExtractor';
-import { swarm } from './src/domain/test_data/test-data-preparation';
 import { AbaControlClient } from './src/domain/grpc/aba.control.client';
 import { Status } from './gRPC/control/Status';
-
-// let testData = fs.readFileSync('./testdata.sql', 'utf8');
+import { swarm } from './src/domain/test_data/test-data-preparation';
+import { NewmanRunner } from './src/domain/newman/runner';
 
 (async () => {
+    console.log("Начинаем API тесты!")
     const control = new AbaControlClient()
     control.sendMsg({ status: Status.ready })
 
-   const launchUUID = await control.listen()
-   const reporter = new Reporter(launchUUID);
+    try {
+        const launchUUID = await control.listen()
+        const reporter = new Reporter(launchUUID);
+      
+        swarm.collectJsonSchemas()
+        await reporter.writeValidateJsonSchemas(swarm.jsonSchems)
+    
+        const summury = await NewmanRunner(swarm.scenario)
 
-    swarm.collectJsonSchemas()
-    await reporter.writeValidateJsonSchemas(swarm.jsonSchems)
-
-    newman.run({
-        collection: swarm.scenario,
-        reporters: 'cli'
-    }, async (err: Error | null, summury: NewmanRunSummary) => {
-        if (err) {
-            console.log(err)
-            control.sendMsg({
-                status: Status.finish,
-                data: err.message
-            })
-            control.endStream()
-        }
-        
         const nde = new NewmanDataExtractor(summury)
         await reporter.writeExecutionsData(nde.transformExecutionsData())
 
@@ -41,7 +29,12 @@ import { Status } from './gRPC/control/Status';
                 pass: nde.getAssertionNumber().total - nde.getAssertionNumber().failed
             })
         })
-
+    } catch(err) {
+        control.sendMsg({
+            status: Status.error,
+            data: `${err}`
+        })
+    } finally {
         control.endStream()
-    })
+    }
 })();

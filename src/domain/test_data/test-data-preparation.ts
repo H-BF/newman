@@ -1,5 +1,5 @@
-import { variables } from '../../init';
 import { IVariable } from './interfaces/variable.interface';
+import fs from 'fs'
 
 class TestDataPreparation {
 
@@ -7,14 +7,9 @@ class TestDataPreparation {
     jsonSchems: Record<string, string> = {}
 
     constructor() {
-        this.scenario = require('../../../swarm.json')
-        this.scenario.variable.forEach((vr: any) => {
-            if (vr.key === "HOST") {
-                vr.value = variables.get("HBF_HOST")
-            } else if (vr.key === "PORT") {
-                vr.value = variables.get("HBF_PORT")
-            }
-        });
+        this.scenario = JSON.parse(
+            fs.readFileSync('/tmp/testData/swarm.json', 'utf-8')
+        ) 
     }
 
     collectJsonSchemas() {

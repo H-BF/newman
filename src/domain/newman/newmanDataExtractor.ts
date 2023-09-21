@@ -7,6 +7,7 @@ export class NewmanDataExtractor {
     private report: NewmanRunSummary
 
     constructor(report: NewmanRunSummary) {
+        console.log("Инициализируем data extractor")
         this.report = report
     }   
 
@@ -25,6 +26,7 @@ export class NewmanDataExtractor {
     }
 
     transformExecutionsData(): IExecution[] {
+        console.log("приводим данные к необходимому виду для записи в БД")
         let result: IExecution[] = []
         this.report.run.executions.forEach( execution => {
             const exec = new ExecutionDataExecutor(execution)
