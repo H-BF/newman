@@ -1,9 +1,11 @@
 import { NewmanRunExecution } from "newman";
 import { IAssertion, IRequest, IResponse } from "./__interfaces";
+import { swarm } from "../test_data/test-data-preparation";
 
 export class ExecutionDataExecutor {
 
     private execution: NewmanRunExecution
+    private ValidationTestName = "Validate response JSON schema"
 
     constructor(execution: NewmanRunExecution) {
         this.execution = execution
@@ -68,8 +70,8 @@ export class ExecutionDataExecutor {
     getResponseData(): IResponse {
         const response = this.execution.response
         return {
-            status: response.status,
-            code: response.code,
+            status: response.status || "unknoun",
+            code: response.code || 0,
             header: this.buildResponseHeader(),
             body: this.buildResponseBody()
         }
@@ -81,15 +83,35 @@ export class ExecutionDataExecutor {
         assertions.forEach( assertion => {
             let status = "PASS"
             let err_msg = ""
+            let schema = assertion.assertion === this.ValidationTestName ? this.getValidateSchemaName() : ""
             if(assertion.error != undefined) {
                 status = "FAIL"
                 err_msg = assertion.error.message
             }
+
            result.push({
             name: assertion.assertion,
             err_msg: err_msg,
+            schema: schema,
             status: status
            })
+        })
+        return result
+    }
+
+    getValidateSchemaName():  string {
+        let result: string = ""
+        const events = this.execution.item.events.all()
+        events.forEach(event => {
+            const execs = event.script.exec
+            execs?.forEach(exec => {
+                Object.entries(swarm.jsonSchems).forEach(([key, value]) => {
+                    if (exec.includes(key)) {
+                        result = key
+                        return
+                    }
+                })
+            })
         })
         return result
     }

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package control;
+
+service Control {
+    rpc streamFunc(stream Req) returns (stream Res);
+    rpc streamApi(stream Req) returns (stream Res);
+}
+
+message Req {
+    Status status = 1;
+    string data = 2;
+}
+
+message Res {
+    string msg = 1;
+}
+
+enum Status {
+    ready = 1;
+    finish = 2;
+    error = 3;
+}

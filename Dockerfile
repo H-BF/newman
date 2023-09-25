@@ -9,10 +9,5 @@ FROM node:18
 WORKDIR /usr/src/hbf_api_tests
 COPY --from=builder /usr/src/app/build .
 COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY ./swarm.json .
-<<<<<<< Dockerfile
-COPY ./testdata.sql .
+COPY --from=builder /usr/src/app/gRPC/control.proto ../gRPC/
 CMD ["node", "index.js"]
-=======
-CMD ["node", "index.js"]
->>>>>>> Dockerfile
