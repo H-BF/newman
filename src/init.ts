@@ -4,12 +4,10 @@ class VariablesStorage {
 
     private variables: Record<string, string> = {}
     private requiredVariables = [
-        "REPORTER_HOST",
-        "REPORTER_PORT",
-        "REPORTER_PROTOCOL",
-        
         "ABA_CONTROL_IP",
-        "ABA_CONTROL_PORT"
+        "ABA_CONTROL_PORT",
+        "ABA_CONTORL_PROXY_PORT",
+        "ABA_CONTORL_PROXY_PROTOCOL"
     ]
 
     constructor() {

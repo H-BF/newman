@@ -11,7 +11,8 @@ export class RestClient extends Axios {
         super({
             baseURL: `${protocol}://${baseUrl}:${port}`,
             headers: {
-                "Content-type": "application/json"    
+                "Content-type": "application/json",
+                "x-type": "api" 
             },
             transformResponse: [function (data) {
                 try {
