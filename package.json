@@ -30,6 +30,7 @@
     "newman": "^5.1.2",
     "node-telegram-bot-api": "^0.61.0",
     "pg": "^8.11.1",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.1",
+    "tslog": "^4.9.2"
   }
 }

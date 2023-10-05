@@ -5,6 +5,7 @@ import { ProtoGrpcType } from '../../../gRPC/control'
 import { variables } from '../../init'
 import { Req } from '../../../gRPC/control/Req'
 import { Res } from '../../../gRPC/control/Res'
+import { logger } from '../logger/logger.service'
 
 export class AbaControlClient {
 
@@ -31,24 +32,24 @@ export class AbaControlClient {
     }
 
     sendMsg(msg: Req) {
-        console.log("отправляем сообщение")
+        logger.info("отправляем сообщение")
         this.call.write(msg)
     }
 
     endStream() {
-        console.log("закрываем стрим")
+        logger.info("закрываем стрим")
         this.call.end()
     }
 
     async listen(): Promise<string> {
         return new Promise((resolve) => {
-            console.log("Ждем команду от сервера")
+            logger.info("Ждем команду от сервера")
             this.call.on('data', async (response: Res) => {
-                console.log(response)
+                logger.info(response)
                 if(!response.msg) {
                     throw new Error("Отсутствует поле msg")
                 }
-                console.log("Пришла!")
+                logger.info("Пришла!")
                 resolve(response.msg)
             })
         })
