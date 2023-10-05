@@ -4,9 +4,10 @@ import { AbaControlClient } from './src/domain/grpc/aba.control.client';
 import { Status } from './gRPC/control/Status';
 import { swarm } from './src/domain/test_data/test-data-preparation';
 import { NewmanRunner } from './src/domain/newman/runner';
+import { logger } from './src/domain/logger/logger.service';
 
 (async () => {
-    console.log("Начинаем API тесты!")
+    logger.info("Начинаем API тесты!")
     const control = new AbaControlClient()
     control.sendMsg({ status: Status.ready })
 

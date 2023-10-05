@@ -1,3 +1,4 @@
+import { logger } from "./domain/logger/logger.service"
 import { MissEnvVariable } from "./errors"
 
 class VariablesStorage {
@@ -31,4 +32,13 @@ class VariablesStorage {
     }
 }
 
-export const variables = new VariablesStorage()
+function initVariableStorage(): VariablesStorage {
+    try {
+        return new VariablesStorage()
+    } catch(err) {
+        logger.error(err)
+        process.exit(1)
+    }
+}
+
+export const variables = initVariableStorage()
