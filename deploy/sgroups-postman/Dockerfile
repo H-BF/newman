@@ -1,13 +1,14 @@
-FROM node:18 as builder
+FROM node:18-alpine as builder
 WORKDIR /usr/src/app
-COPY . .
+COPY *.json .
 RUN npm ci
+ADD . .
 RUN npm run build
 
-FROM node:18
-
-WORKDIR /usr/src/hbf_api_tests
-COPY --from=builder /usr/src/app/build .
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/gRPC/control.proto ../gRPC/
-CMD ["node", "index.js"]
+FROM node:18-alpine
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/build ./build
+ADD  ./gRPC/control.proto ./gRPC/control.proto
+ADD *.json .
+RUN npm ci --only=production
+CMD ["node", "./build/index.js"]

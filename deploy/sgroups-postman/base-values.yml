@@ -9,4 +9,4 @@ image:
 
 command:
   - node
-  - index.js
+  - ./build/index.js
